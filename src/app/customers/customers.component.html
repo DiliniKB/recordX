@@ -1,0 +1,77 @@
+<div class="container mt-4">
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Search Customer" />
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-primary" (click)="openPopup()">Add Customer</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            Customers List
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Name</th>
+                  <th>DOB</th>
+                  <th>Location</th>
+                  <th>Job</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let customer of customers">
+                  <td>{{ customer.nic }}</td>
+                  <td>{{ customer.name }}</td>
+                  <td>{{ customer.dob | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ customer.location }}</td>
+                  <td>{{ customer.job }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-warning" (click)="openPopup(customer)">Edit</button>
+                    <button class="btn btn-sm btn-danger" (click)="deleteCustomer(customer.id)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Customer Modal -->
+  <div id="addCustomerPopup" class="popup" *ngIf="isPopupVisible">
+    <div class="popup-content">
+      <span class="close" (click)="closePopup()">&times;</span>
+      <h5>{{ editMode ? 'Edit Customer' : 'Add Customer' }}</h5>
+      <form #customerForm="ngForm">
+        <div class="mb-3">
+          <label for="customerID" class="form-label">Customer ID</label>
+          <input type="text" class="form-control" id="customerID" name="customerID" [(ngModel)]="newCustomer.nic" [readonly]="editMode" />
+        </div>
+        <div class="mb-3">
+          <label for="customerName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="customerName" name="customerName" [(ngModel)]="newCustomer.name" />
+        </div>
+        <div class="mb-3">
+          <label for="dob" class="form-label">Date of Birth</label>
+          <input type="date" class="form-control" id="dob" name="dob" [(ngModel)]="newCustomer.dob" />
+        </div>
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" class="form-control" id="location" name="location" [(ngModel)]="newCustomer.location" />
+        </div>
+        <div class="mb-3">
+          <label for="job" class="form-label">Job</label>
+          <input type="text" class="form-control" id="job" name="job" [(ngModel)]="newCustomer.job" />
+        </div>
+        <button type="button" class="btn btn-primary" (click)="saveCustomer()">Save Customer</button>
+      </form>
+    </div>
+  </div>

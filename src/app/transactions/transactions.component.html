@@ -1,0 +1,80 @@
+<div class="container mt-4">
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Search Transaction" />
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-primary" (click)="openPopup()">Add Transaction</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            Transactions List
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Transaction ID</th>
+                    <th>Customer ID</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let transaction of transactions">
+                    <td>{{ transaction.transactionID }}</td>
+                    <td>{{ transaction.customerID }}</td>
+                    <td>{{ transaction.amount | currency }}</td>
+                    <td>{{ transaction.status }}</td>
+                    <td>{{ transaction.date }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" (click)="openPopup(transaction)">Edit</button>
+                        <button class="btn btn-sm btn-danger" (click)="deleteTransaction(transaction.transactionID)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Transaction Modal -->
+  <div id="addTransactionPopup" class="popup" *ngIf="isPopupVisible">
+    <div class="popup-content">
+      <span class="close" (click)="closePopup()">&times;</span>
+      <h5>Add Transaction</h5>
+      <form #transactionForm="ngForm">
+        <div class="mb-3">
+          <label for="transactionID" class="form-label">Transaction ID</label>
+          <input type="text" class="form-control" id="transactionID" name="transactionID" [(ngModel)]="newTransaction.transactionID" />
+        </div>
+        <div class="mb-3">
+          <label for="customerID" class="form-label">Customer ID</label>
+          <input type="text" class="form-control" id="customerID" name="customerID" [(ngModel)]="newTransaction.customerID" />
+        </div>
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="number" class="form-control" id="amount" name="amount" [(ngModel)]="newTransaction.amount" />
+        </div>
+        <div class="mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select class="form-control" id="status" name="status" [(ngModel)]="newTransaction.status">
+            <option value="Paid">Paid</option>
+            <option value="Credit">Credit</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newTransaction.date" />
+        </div>
+        <button type="button" class="btn btn-primary" (click)="saveTransaction()">Save Transaction</button>
+      </form>
+    </div>
+  </div>
