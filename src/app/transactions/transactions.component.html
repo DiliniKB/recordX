@@ -28,13 +28,13 @@
                 <tbody>
                   <tr *ngFor="let transaction of transactions">
                     <td>{{ transaction.transactionID }}</td>
-                    <td>{{ transaction.customerID }}</td>
+                    <td>{{ transaction.customerNIC }}</td>
                     <td>{{ transaction.amount | currency }}</td>
                     <td>{{ transaction.status }}</td>
-                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.dateTime }}</td>
                     <td>
                         <button class="btn btn-sm btn-warning" (click)="openPopup(transaction)">Edit</button>
-                        <button class="btn btn-sm btn-danger" (click)="deleteTransaction(transaction.transactionID)">Delete</button>
+                        <button class="btn btn-sm btn-danger" (click)="deleteTransaction(transaction.id)">Delete</button>
                     </td>
                   </tr>
                 </tbody>
@@ -57,7 +57,7 @@
         </div>
         <div class="mb-3">
           <label for="customerID" class="form-label">Customer ID</label>
-          <input type="text" class="form-control" id="customerID" name="customerID" [(ngModel)]="newTransaction.customerID" />
+          <input type="text" class="form-control" id="customerID" name="customerID" [(ngModel)]="newTransaction.customerNIC" />
         </div>
         <div class="mb-3">
           <label for="amount" class="form-label">Amount</label>
@@ -72,7 +72,7 @@
         </div>
         <div class="mb-3">
           <label for="date" class="form-label">Date</label>
-          <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newTransaction.date" />
+          <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newTransaction.dateTime" />
         </div>
         <button type="button" class="btn btn-primary" (click)="saveTransaction()">Save Transaction</button>
       </form>
