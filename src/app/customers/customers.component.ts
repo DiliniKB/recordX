@@ -15,12 +15,18 @@ import { CustomerService } from './customers.service';
   providers: [CustomerService]
 })
 export class CustomersComponent implements OnInit {
+
   isPopupVisible = false;
   editMode = false;
   customers: Customer[] = [];
   newCustomer: Customer = new Customer();
+  minDOB: string;
 
-  constructor(private customerService: CustomerService) {}
+  constructor(private customerService: CustomerService) {
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - 18);
+    this.minDOB = currentDate.toISOString().split('T')[0];
+  }
 
   async ngOnInit() {
     await this.loadCustomers();
@@ -79,5 +85,10 @@ export class CustomersComponent implements OnInit {
     } catch (error) {
       console.error('Failed to delete customer:', error);
     }
+  }
+
+  customerAlreadyRegistered(nic: string): any {
+    const customer = this.customers.find(c => c.nic === nic);
+    return customer? true : false;
   }
 }
