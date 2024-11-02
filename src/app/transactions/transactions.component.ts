@@ -4,29 +4,30 @@ import { Transaction } from './transaction.model';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TransactionService } from './transaction.service';
+import { v4 as uuidv4 } from 'uuid';
+import { CustomerService } from '../customers/customers.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
-  providers: [TransactionService]
+  imports: [FormsModule, CommonModule, HttpClientModule, NgSelectModule],
+  providers: [TransactionService, CustomerService]
 })
 export class TransactionsComponent {
   isPopupVisible = false;
   editMode = false;
   transactions: Transaction[] = [];
   newTransaction: Transaction = new Transaction();
+  customers: { nic: string, name: string }[] = [];
 
-  constructor(private transactionService: TransactionService) {}
+  constructor(private transactionService: TransactionService, private customerService: CustomerService) {}
 
   async ngOnInit() {
     await this.loadTransactions();
-  }
-
-  async ngOnChanges() {
-    await this.loadTransactions();
+    await this.loadCustomers();
   }
 
   async loadTransactions() {
@@ -37,12 +38,21 @@ export class TransactionsComponent {
     }
   }
 
+  async loadCustomers() {
+    try {
+      this.customers = await this.customerService.getCustomers();
+    } catch (error) {
+      console.error('Failed to load customers:', error);
+    }
+  }
+
   openPopup(editTransaction?: Transaction) {
     if (editTransaction) {
       this.newTransaction = { ...editTransaction };
       this.editMode = true;
     } else {
       this.newTransaction = new Transaction();
+      this.newTransaction.transactionID = uuidv4();
       this.editMode = false;
     }
     this.isPopupVisible = true;

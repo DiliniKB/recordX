@@ -53,11 +53,12 @@
       <form #transactionForm="ngForm">
         <div class="mb-3">
           <label for="transactionID" class="form-label">Transaction ID</label>
-          <input type="text" class="form-control" id="transactionID" name="transactionID" [(ngModel)]="newTransaction.transactionID" />
+          <input type="text" class="form-control" id="transactionID" name="transactionID" [(ngModel)]="newTransaction.transactionID" disabled="true"/>
         </div>
         <div class="mb-3">
           <label for="customerID" class="form-label">Customer ID</label>
-          <input type="text" class="form-control" id="customerID" name="customerID" [(ngModel)]="newTransaction.customerNIC" />
+          <ng-select [items]="customers" bindLabel="name" bindValue="id" [(ngModel)]="newTransaction.customerNIC" placeholder="Select or search customer ID" [searchable]="true" [clearable]="true" class="form-control border">
+          </ng-select>
         </div>
         <div class="mb-3">
           <label for="amount" class="form-label">Amount</label>
